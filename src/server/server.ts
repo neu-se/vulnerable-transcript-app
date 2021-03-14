@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import sanitizeHtml from 'sanitize-html';
 
 // app-specific packages
 import { transcriptManager as db } from '../types/local-transcript-manager';
@@ -60,8 +61,7 @@ app.post('/transcripts', (req, res) => {
 
 app.get('/transcripts/:id', (req, res) => {
   // req.params to get components of the path
-  const id = req.params.id;
-  console.log(id);
+  const id = sanitizeHtml(req.params.id);
   console.log(`Handling GET /transcripts/:id id = ${id}`);
   const theTranscript = db.getTranscript(parseInt(id));
   if (theTranscript === undefined) {
